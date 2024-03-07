@@ -1,4 +1,4 @@
-package com.sc.rbbitmq.utlis;
+package com.sc.rabbitmq.utlis;
 
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;

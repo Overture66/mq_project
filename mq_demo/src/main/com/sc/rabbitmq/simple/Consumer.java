@@ -1,29 +1,19 @@
-package com.sc.rbbitmq.routing;
+package com.sc.rabbitmq.simple;
 
 import com.rabbitmq.client.*;
-import com.sc.rbbitmq.utlis.ConnectionUtlis;
+import com.sc.rabbitmq.utlis.ConnectionUtlis;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
-public class Consumer1 {
+public class Consumer {
     public static void main(String[] args) throws IOException, TimeoutException {
         Connection connection = ConnectionUtlis.getConnection();
         //创建channel
         Channel channel = connection.createChannel();
-        //声明交换机
-        /*
-        参数：1.交换机名称
-        2.交换机类型,fanout、direct(定向)、topic(通配符)
-        * */
-        channel.exchangeDeclare(Producer.exchange_Name, BuiltinExchangeType.DIRECT);
-        //参数：1队列名 2.是否持久化 3.是否独占连接 4.是否不用时自动删除 5.队列其他参数
-        channel.queueDeclare(Producer.queueName1, true, false, false, null);
-        channel.queueDeclare(Producer.queueName2, true, false, false, null);
+        //声明队列
+        channel.queueDeclare(Producer.queueName, true, false, false, null);
 
-        //队列绑定交换机
-        channel.queueBind(Producer.queueName1 ,Producer.exchange_Name,"insert");
-        channel.queueBind(Producer.queueName2,Producer.exchange_Name , "update");
         //接受消息
         DefaultConsumer consumer=new DefaultConsumer(channel){
             /**
@@ -49,7 +39,7 @@ public class Consumer1 {
          * 2.是否确认，true表示接收到消息后，告诉mq消息已经接收，false表示消息接收到，告诉mq消息接收到
          * 3.指定消费对象，消息函数的回调函数
          */
-        channel.basicConsume(Producer.queueName1,true,consumer);
+        channel.basicConsume(Producer.queueName,true,consumer);
 
 
 //        //释放资源

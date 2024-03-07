@@ -1,7 +1,7 @@
-package com.sc.rbbitmq.ps;
+package com.sc.rabbitmq.topic;
 
 import com.rabbitmq.client.*;
-import com.sc.rbbitmq.utlis.ConnectionUtlis;
+import com.sc.rabbitmq.utlis.ConnectionUtlis;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -16,15 +16,15 @@ public class Consumer1 {
         参数：1.交换机名称
         2.交换机类型,fanout、direct(定向)、topic(通配符)
         * */
-        channel.exchangeDeclare(Producer.exchange_Name, BuiltinExchangeType.FANOUT);
+        channel.exchangeDeclare(Producer.exchange_Name, BuiltinExchangeType.TOPIC);
         //参数：1队列名 2.是否持久化 3.是否独占连接 4.是否不用时自动删除 5.队列其他参数
         channel.queueDeclare(Producer.queueName1, true, false, false, null);
         channel.queueDeclare(Producer.queueName2, true, false, false, null);
 
         //队列绑定交换机
-        channel.queueBind(Producer.queueName1 ,Producer.exchange_Name,"");
-        channel.queueBind(Producer.queueName2,Producer.exchange_Name , "");
-
+        channel.queueBind(Producer.queueName1 ,Producer.exchange_Name,"item.*");
+        channel.queueBind(Producer.queueName2,Producer.exchange_Name , "item.insert");
+        channel.queueBind(Producer.queueName2,Producer.exchange_Name , "item.update");
         //接受消息
         DefaultConsumer consumer=new DefaultConsumer(channel){
             /**

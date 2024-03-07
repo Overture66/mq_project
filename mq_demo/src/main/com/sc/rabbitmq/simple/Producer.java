@@ -1,9 +1,8 @@
-package com.sc.rbbitmq.simple;
+package com.sc.rabbitmq.simple;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-import com.sc.rbbitmq.utlis.ConnectionUtlis;
+import com.sc.rabbitmq.utlis.ConnectionUtlis;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
